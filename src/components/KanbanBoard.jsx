@@ -56,36 +56,6 @@ export default function KanbanBoard() {
         name="backlog"
         monster={{ color: "bg-gray-500", height: "h-16" }}
       />
-      <Column
-        title="Doing"
-        color="bg-gray-200"
-        tasks={boards.doing}
-        onMove={moveTask}
-        onAdd={addTask}
-        onRemove={removeTask}
-        name="doing"
-        monster={{ color: "bg-gray-500", height: "h-16" }}
-      />
-      <Column
-        title="Review"
-        color="bg-gray-200"
-        tasks={boards.review}
-        onMove={moveTask}
-        onAdd={addTask}
-        onRemove={removeTask}
-        name="review"
-        monster={{ color: "bg-gray-500", height: "h-16" }}
-      />
-      <Column
-        title="Done"
-        color="bg-gray-200"
-        tasks={boards.done}
-        onMove={moveTask}
-        onAdd={addTask}
-        onRemove={removeTask}
-        name="done"
-        monster={{ color: "bg-gray-500", height: "h-16" }}
-      />
     </div>
   );
 }
