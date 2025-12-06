@@ -9,6 +9,7 @@ export default function Column({
   onMove,
   onAdd,
   onRemove,
+  onEmptyTrash,
   name,
   monster,
 }) {
@@ -54,21 +55,31 @@ export default function Column({
           )}
         </div>
 
-        {/* Add Task Box */}
-        <div className="flex space-x-2">
-          <input
-            value={newTask}
-            onChange={(e) => setNewTask(e.target.value)}
-            className="flex-1 px-2 py-1 text-sm border rounded-md"
-            placeholder="New Task..."
-          />
+        {/* Add Task Box or Empty Trash Button */}
+        {name === "trash" ? (
           <button
-            onClick={handleAdd}
-            className="bg-white border text-sm px-3 rounded-md hover:bg-white/70 transition"
+            onClick={onEmptyTrash}
+            disabled={tasks.length === 0}
+            className="w-full bg-red-500 text-white text-sm px-3 py-2 rounded-md hover:bg-red-600 transition disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
-            ➕
+            🗑️ Empty Trash
           </button>
-        </div>
+        ) : (
+          <div className="flex space-x-2">
+            <input
+              value={newTask}
+              onChange={(e) => setNewTask(e.target.value)}
+              className="flex-1 px-2 py-1 text-sm border rounded-md"
+              placeholder="New Task..."
+            />
+            <button
+              onClick={handleAdd}
+              className="bg-white border text-sm px-3 rounded-md hover:bg-white/70 transition"
+            >
+              ➕
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

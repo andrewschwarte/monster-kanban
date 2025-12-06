@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import Column from "./Column";
-import { getTasks, addTask as addTaskAPI } from "../api/tasks";
+import {
+  getTasks,
+  addTask as addTaskAPI,
+  updateTask,
+  deleteTask,
+} from "../api/tasks";
 
 export default function KanbanBoard() {
   const [boards, setBoards] = useState({
@@ -8,6 +13,7 @@ export default function KanbanBoard() {
     doing: [],
     review: [],
     done: [],
+    trash: [],
   });
 
   // Load tasks from backend on mount
@@ -17,7 +23,13 @@ export default function KanbanBoard() {
         const data = await getTasks();
 
         // Group backend tasks by status → column
-        const groups = { backlog: [], doing: [], review: [], done: [] };
+        const groups = {
+          backlog: [],
+          doing: [],
+          review: [],
+          done: [],
+          trash: [],
+        };
         for (const t of data) {
           const column = t.status === "todo" ? "backlog" : t.status;
           if (groups[column]) {
@@ -57,6 +69,7 @@ export default function KanbanBoard() {
     if (from === to) return;
     const newStatus = to === "backlog" ? "todo" : to;
     try {
+      await updateTask(task.id, { title: task.text, status: newStatus });
       // TODO: change tasks from old status to new status
       setBoards((prev) => {
         const newBoards = { ...prev };
@@ -69,20 +82,60 @@ export default function KanbanBoard() {
     }
   };
 
+  //---------------------------Update to remove task funtion on delete move to trash intead------------------
+
   // Remove task (delete)
+  // Move task to trash instead of deleting
   const removeTask = async (column, id) => {
+    // -----------------------------If already in trash, permanently delete
+    if (column === "trash") {
+      try {
+        await deleteTask(id);
+        setBoards((prev) => {
+          const newBoards = { ...prev };
+          newBoards.trash = newBoards.trash.filter((t) => t.id !== id);
+          return newBoards;
+        });
+      } catch (err) {
+        console.error("Error deleting task:", err);
+      }
+      return;
+    }
+
+    //------------------------------- Otherwise, move to trash
+    const task = boards[column].find((t) => t.id === id);
+    if (!task) return;
+
     try {
-      // TODO: remove task
+      await updateTask(id, { title: task.text, status: "trash" });
       setBoards((prev) => {
         const newBoards = { ...prev };
         newBoards[column] = newBoards[column].filter((t) => t.id !== id);
+        newBoards.trash = [...newBoards.trash, task];
         return newBoards;
       });
     } catch (err) {
-      console.error("Error deleting task:", err);
+      console.error("Error moving task to trash:", err);
     }
   };
 
+  //---------------------------------- Empty all tasks from trash (big red button)
+  const emptyTrash = async () => {
+    const trashTasks = boards.trash;
+    if (trashTasks.length === 0) return;
+
+    try {
+      // Delete all trash tasks from backend
+      await Promise.all(trashTasks.map((task) => deleteTask(task.id)));
+
+      setBoards((prev) => ({
+        ...prev,
+        trash: [],
+      }));
+    } catch (err) {
+      console.error("Error emptying trash:", err);
+    }
+  };
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full max-w-6xl">
       <Column
@@ -124,6 +177,17 @@ export default function KanbanBoard() {
         onRemove={removeTask}
         name="done"
         monster={{ color: "bg-blue-500", height: "h-16" }}
+      />
+      <Column
+        title="Trash"
+        color="bg-gray-100"
+        tasks={boards.trash}
+        onMove={moveTask}
+        onAdd={addTask}
+        onRemove={removeTask}
+        onEmptyTrash={emptyTrash}
+        name="trash"
+        monster={{ color: "bg-gray-500", height: "h-16" }}
       />
     </div>
   );
