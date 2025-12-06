@@ -48,43 +48,43 @@ export default function KanbanBoard() {
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full max-w-6xl">
       <Column
         title="Backlog"
-        color="bg-gray-200"
+        color="bg-red-200"
         tasks={boards.backlog}
         onMove={moveTask}
         onAdd={addTask}
         onRemove={removeTask}
         name="backlog"
-        monster={{ color: "bg-gray-500", height: "h-16" }}
+        monster={{ color: "bg-red-500", height: "h-16" }}
       />
       <Column
         title="Doing"
-        color="bg-gray-200"
+        color="bg-orange-200"
         tasks={boards.doing}
         onMove={moveTask}
         onAdd={addTask}
         onRemove={removeTask}
         name="doing"
-        monster={{ color: "bg-gray-500", height: "h-16" }}
+        monster={{ color: "bg-orange-500", height: "h-20" }}
       />
       <Column
         title="Review"
-        color="bg-gray-200"
+        color="bg-green-200"
         tasks={boards.review}
         onMove={moveTask}
         onAdd={addTask}
         onRemove={removeTask}
         name="review"
-        monster={{ color: "bg-gray-500", height: "h-16" }}
+        monster={{ color: "bg-green-500", height: "h-24" }}
       />
       <Column
         title="Done"
-        color="bg-gray-200"
+        color="bg-blue-200"
         tasks={boards.done}
         onMove={moveTask}
         onAdd={addTask}
         onRemove={removeTask}
         name="done"
-        monster={{ color: "bg-gray-500", height: "h-16" }}
+        monster={{ color: "bg-blue-500", height: "h-28" }}
       />
     </div>
   );

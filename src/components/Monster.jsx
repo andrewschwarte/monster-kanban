@@ -64,6 +64,7 @@ export default function Monster({ color, height = "h-24" }) {
           />
         </div>
       </div>
+      <div className='absolute w-8 h-1 bg-black bottom-1.5 transition-transform duration-75 ease-linear"'></div>
     </div>
   );
 }
