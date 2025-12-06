@@ -102,7 +102,7 @@ export default function KanbanBoard() {
       return;
     }
 
-    //------------------------------- Otherwise, move to trash
+    //------------------------------- Otherwise, move to trash--------------
     const task = boards[column].find((t) => t.id === id);
     if (!task) return;
 
@@ -137,7 +137,7 @@ export default function KanbanBoard() {
     }
   };
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full max-w-6xl">
+    <div className="grid grid-cols-1 md:grid-cols-5 gap-4 w-full max-w-6xl">
       <Column
         title="Backlog"
         color="bg-red-200"
@@ -178,6 +178,7 @@ export default function KanbanBoard() {
         name="done"
         monster={{ color: "bg-blue-500", height: "h-16" }}
       />
+      {/* ------------------added new column for trash ---------------------*/}
       <Column
         title="Trash"
         color="bg-gray-100"

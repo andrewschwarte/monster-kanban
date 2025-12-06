@@ -37,7 +37,7 @@ export default function Column({
       <Monster color={monster.color} height={monster.height} />
 
       {/* Board Column */}
-      <div className={`${color} p-3 rounded-lg shadow w-full -mt-4`}>
+      <div className={`${color} mt-3 p-3 rounded-lg shadow w-full -mt-4`}>
         <h2 className="text-lg font-semibold text-gray-800 mb-2 text-center">
           {title}
         </h2>
@@ -62,14 +62,14 @@ export default function Column({
             disabled={tasks.length === 0}
             className="w-full bg-red-500 text-white text-sm px-3 py-2 rounded-md hover:bg-red-600 transition disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
-            🗑️ Empty Trash
+            Empty Trash
           </button>
         ) : (
           <div className="flex space-x-2">
             <input
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
-              className="flex-1 px-2 py-1 text-sm border rounded-md"
+              className="flex-1 px-1 py-1 text-sm border rounded-md max-w-37"
               placeholder="New Task..."
             />
             <button
