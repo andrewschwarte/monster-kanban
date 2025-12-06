@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import Column from "./Column";
-import {
-  getTasks,
-  addTask as addTaskAPI,
-  updateTask,
-  deleteTask,
-} from "../api/tasks";
+import { getTasks, addTask as addTaskAPI } from "../api/tasks";
 
 export default function KanbanBoard() {
   const [boards, setBoards] = useState({
@@ -62,7 +57,7 @@ export default function KanbanBoard() {
     if (from === to) return;
     const newStatus = to === "backlog" ? "todo" : to;
     try {
-      await updateTask(task.id, { title: task.text, status: newStatus });
+      // TODO: change tasks from old status to new status
       setBoards((prev) => {
         const newBoards = { ...prev };
         newBoards[from] = newBoards[from].filter((t) => t.id !== task.id);
@@ -77,7 +72,7 @@ export default function KanbanBoard() {
   // Remove task (delete)
   const removeTask = async (column, id) => {
     try {
-      await deleteTask(id);
+      // TODO: remove task
       setBoards((prev) => {
         const newBoards = { ...prev };
         newBoards[column] = newBoards[column].filter((t) => t.id !== id);
