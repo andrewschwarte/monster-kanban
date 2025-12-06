@@ -62,7 +62,7 @@ export default function KanbanBoard() {
     if (from === to) return;
     const newStatus = to === "backlog" ? "todo" : to;
     try {
-      await updateTask(task.id, { status: newStatus });
+      await updateTask(task.id, { title: task.text, status: newStatus });
       setBoards((prev) => {
         const newBoards = { ...prev };
         newBoards[from] = newBoards[from].filter((t) => t.id !== task.id);
